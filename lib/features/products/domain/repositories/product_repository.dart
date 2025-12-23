@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../entities/product.dart';
@@ -17,7 +18,7 @@ class GetProductsParams {
   final String? search;
 }
 
-class PaginationMeta {
+class PaginationMeta extends Equatable {
   const PaginationMeta({
     required this.total,
     required this.limit,
@@ -30,6 +31,9 @@ class PaginationMeta {
 
   bool get hasMore => offset + limit < total;
   int get nextOffset => offset + limit;
+
+  @override
+  List<Object?> get props => [total, limit, offset];
 }
 
 class ProductsResult {

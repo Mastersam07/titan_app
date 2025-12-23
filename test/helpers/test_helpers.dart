@@ -104,27 +104,15 @@ void setupTestDependencies({
   di.registerLazySingleton<UpdateProduct>(() => updateProduct);
   di.registerLazySingleton<DeleteProduct>(() => deleteProduct);
 
-  di.registerFactory<ProductListCubit>(
-    () => ProductListCubit(getProducts: di()),
-  );
+  di.registerFactory<ProductListCubit>(() => ProductListCubit(getProducts: di()));
 
-  di.registerFactory<ProductDetailCubit>(
-    () => ProductDetailCubit(getProduct: di(), deleteProduct: di()),
-  );
+  di.registerFactory<ProductDetailCubit>(() => ProductDetailCubit(getProduct: di(), deleteProduct: di()));
 
-  di.registerFactory<ProductCreateCubit>(
-    () => ProductCreateCubit(createProduct: di()),
-  );
+  di.registerFactory<ProductCreateCubit>(() => ProductCreateCubit(createProduct: di()));
 
-  di.registerFactory<ProductEditCubit>(
-    () => ProductEditCubit(getProduct: di(), updateProduct: di()),
-  );
+  di.registerFactory<ProductEditCubit>(() => ProductEditCubit(getProduct: di(), updateProduct: di()));
 }
 
-void tearDownTestDependencies() {
-  di.reset();
-}
+void tearDownTestDependencies() => di.reset();
 
-Widget createTestApp({required Widget child}) => MaterialApp(
-      home: child,
-    );
+Widget createTestApp({required Widget child}) => MaterialApp(home: child);

@@ -135,7 +135,86 @@ flutter test
 
 # Run with coverage
 flutter test --coverage
+
+# Run specific test file
+flutter test test/unit/cubits/product_list_cubit_test.dart
+
+# Run flow tests only
+flutter test test/flows/
 ```
+
+### Test Structure
+
+```
+test/
+├── flows/                          # Integration/Flow tests
+│   └── product_flows_test.dart     # End-to-end user flow tests
+├── helpers/
+│   └── test_helpers.dart           # Mocks, fixtures, and test utilities
+├── robots/                         # Robot pattern (Page Objects)
+│   ├── product_list_robot.dart
+│   ├── product_detail_robot.dart
+│   └── product_form_robot.dart
+└── unit/
+    └── cubits/                     # Unit tests for Cubits
+        ├── product_list_cubit_test.dart
+        ├── product_detail_cubit_test.dart
+        ├── product_create_cubit_test.dart
+        └── product_edit_cubit_test.dart
+```
+
+### Test Types
+
+| Type | Location | Description |
+|------|----------|-------------|
+| **Unit Tests** | `test/unit/cubits/` | Tests individual Cubits in isolation using `bloc_test` |
+| **Flow Tests** | `test/flows/` | Widget tests covering complete user journeys |
+| **Robots** | `test/robots/` | Page Object pattern classes for readable widget tests |
+
+### Robot Pattern
+
+The project uses the **Robot pattern** (Page Object pattern for Flutter) to make widget tests more readable and maintainable:
+
+```dart
+// Robot encapsulates UI interactions and assertions
+class ProductListRobot {
+  ProductListRobot(this.tester);
+  final WidgetTester tester;
+
+  // Finders
+  Finder get productCards => find.byType(ProductCard);
+
+  // Assertions
+  Future<void> showsProducts(int count) async =>
+    expect(productCards, findsNWidgets(count));
+
+  // Actions
+  Future<void> tapProduct(int index) async {
+    await tester.tap(productCards.at(index));
+    await tester.pumpAndSettle();
+  }
+}
+
+// Usage in tests
+testWidgets('shows products', (tester) async {
+  await tester.pumpWidget(createTestApp(child: const ProductsListScreen()));
+  final robot = ProductListRobot(tester);
+
+  await robot.showsLoading();
+  await tester.pumpAndSettle();
+  await robot.showsProducts(2);
+});
+```
+
+### Flow Tests Coverage
+
+The flow tests cover complete user journeys:
+
+1. **Product List Flows** - Load, empty state, error with retry, search, refresh
+2. **Product Creation Flows** - Create successfully, validation errors
+3. **Product Detail Flows** - View detail, delete product
+4. **Product Edit Flows** - Edit from detail, edit from list
+5. **Error Handling Flows** - API errors on create/edit/delete
 
 ## Dependencies
 

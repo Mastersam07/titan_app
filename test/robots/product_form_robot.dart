@@ -29,49 +29,29 @@ class ProductFormRobot {
   Finder validationError(String error) => find.text(error);
 
   // Assertions
-  Future<void> isVisible() async {
-    expect(screen, findsOneWidget);
-  }
+  Future<void> isVisible() async => expect(screen, findsOneWidget);
 
-  Future<void> isCreateMode() async {
-    expect(createTitle, findsOneWidget);
-  }
+  Future<void> isCreateMode() async => expect(createTitle, findsOneWidget);
 
-  Future<void> isEditMode() async {
-    expect(editTitle, findsOneWidget);
-  }
+  Future<void> isEditMode() async => expect(editTitle, findsOneWidget);
 
-  Future<void> showsLoading() async {
-    expect(loadingIndicator, findsOneWidget);
-  }
+  Future<void> showsLoading() async => expect(loadingIndicator, findsOneWidget);
 
-  Future<void> showsError(String message) async {
-    expect(find.text(message), findsOneWidget);
-  }
+  Future<void> showsError(String message) async => expect(find.text(message), findsOneWidget);
 
-  Future<void> showsValidationError(String error) async {
-    expect(validationError(error), findsOneWidget);
-  }
+  Future<void> showsValidationError(String error) async => expect(validationError(error), findsOneWidget);
 
-  Future<void> showsSuccessSnackbar() async {
-    expect(successSnackbar, findsOneWidget);
-  }
+  Future<void> showsSuccessSnackbar() async => expect(successSnackbar, findsOneWidget);
 
-  Future<void> isNotVisible() async {
-    expect(screen, findsNothing);
-  }
+  Future<void> isNotVisible() async => expect(screen, findsNothing);
 
   Future<void> hasNameValue(String value) async {
-    final textField = tester.widget<TextFormField>(
-      find.widgetWithText(TextFormField, 'Product Name *'),
-    );
+    final textField = tester.widget<TextFormField>(find.widgetWithText(TextFormField, 'Product Name *'));
     expect(textField.controller?.text, value);
   }
 
   Future<void> hasPriceValue(String value) async {
-    final textField = tester.widget<TextFormField>(
-      find.widgetWithText(TextFormField, 'Price *'),
-    );
+    final textField = tester.widget<TextFormField>(find.widgetWithText(TextFormField, 'Price *'));
     expect(textField.controller?.text, value);
   }
 
@@ -129,10 +109,10 @@ class ProductFormRobot {
     await enterName(name);
     await enterPrice(price);
     await enterStock(stock);
-    if (category != null) {
+    if (category case final category?) {
       await selectCategory(category);
     }
-    if (description != null) {
+    if (description case final description?) {
       await enterDescription(description);
     }
   }

@@ -23,41 +23,24 @@ class ProductDetailRobot {
   Finder productCategory(String category) => find.text(category);
 
   // Assertions
-  Future<void> isVisible() async {
-    expect(screen, findsOneWidget);
-  }
+  Future<void> isVisible() async => expect(screen, findsOneWidget);
 
-  Future<void> showsLoading() async {
-    expect(loadingIndicator, findsOneWidget);
-  }
+  Future<void> showsLoading() async => expect(loadingIndicator, findsOneWidget);
 
-  Future<void> showsProductName(String name) async {
-    expect(productName(name), findsOneWidget);
-  }
+  Future<void> showsProductName(String name) async => expect(productName(name), findsOneWidget);
 
-  Future<void> showsProductPrice(String price) async {
-    expect(productPrice(price), findsOneWidget);
-  }
+  Future<void> showsProductPrice(String price) async => expect(productPrice(price), findsOneWidget);
 
-  Future<void> showsProductDescription(String description) async {
-    expect(productDescription(description), findsWidgets);
-  }
+  Future<void> showsProductDescription(String description) async =>
+      expect(productDescription(description), findsWidgets);
 
-  Future<void> showsProductCategory(String category) async {
-    expect(productCategory(category), findsWidgets);
-  }
+  Future<void> showsProductCategory(String category) async => expect(productCategory(category), findsWidgets);
 
-  Future<void> showsDeleteDialog() async {
-    expect(deleteDialog, findsOneWidget);
-  }
+  Future<void> showsDeleteDialog() async => expect(deleteDialog, findsOneWidget);
 
-  Future<void> showsSuccessSnackbar() async {
-    expect(successSnackbar, findsOneWidget);
-  }
+  Future<void> showsSuccessSnackbar() async => expect(successSnackbar, findsOneWidget);
 
-  Future<void> isNotVisible() async {
-    expect(screen, findsNothing);
-  }
+  Future<void> isNotVisible() async => expect(screen, findsNothing);
 
   // Actions
   Future<void> tapEditButton() async {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:titan_flutter/features/products/presentation/screens/products_list_screen.dart';
+import 'package:titan_flutter/features/products/presentation/widgets/error_view.dart';
 import 'package:titan_flutter/features/products/presentation/widgets/product_card.dart';
 import 'package:titan_flutter/features/products/presentation/widgets/shimmer_loading.dart';
-import 'package:titan_flutter/features/products/presentation/widgets/error_view.dart';
 
 class ProductListRobot {
   ProductListRobot(this.tester);
