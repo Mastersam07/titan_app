@@ -15,8 +15,7 @@ class ProductCard extends StatelessWidget {
   final VoidCallback? onEdit;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(BuildContext context) => Card(
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
@@ -141,7 +140,6 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
-  }
 
   Widget _buildImage() {
     if (product.imageUrl == null || product.imageUrl!.isEmpty) {

@@ -10,8 +10,7 @@ class ErrorView extends StatelessWidget {
   final VoidCallback? onRetry;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
@@ -48,7 +47,6 @@ class ErrorView extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class EmptyView extends StatelessWidget {
@@ -65,8 +63,7 @@ class EmptyView extends StatelessWidget {
   final String? actionLabel;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
@@ -96,5 +93,4 @@ class EmptyView extends StatelessWidget {
         ),
       ),
     );
-  }
 }

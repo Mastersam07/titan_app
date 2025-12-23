@@ -10,7 +10,5 @@ class DeleteProduct implements UseCase<bool, int> {
   final ProductRepository repository;
 
   @override
-  Future<Either<Failure, bool>> call(int id) {
-    return repository.deleteProduct(id);
-  }
+  Future<Either<Failure, bool>> call(int id) => repository.deleteProduct(id);
 }

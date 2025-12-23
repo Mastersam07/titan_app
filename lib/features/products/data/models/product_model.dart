@@ -13,8 +13,7 @@ class ProductModel extends Product {
     super.updatedAt,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
       id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String?,
@@ -25,10 +24,8 @@ class ProductModel extends Product {
       createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'] as String) : null,
       updatedAt: json['updated_at'] != null ? DateTime.tryParse(json['updated_at'] as String) : null,
     );
-  }
 
-  factory ProductModel.fromEntity(Product product) {
-    return ProductModel(
+  factory ProductModel.fromEntity(Product product) => ProductModel(
       id: product.id,
       name: product.name,
       description: product.description,
@@ -39,10 +36,8 @@ class ProductModel extends Product {
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
     );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'id': id,
       'name': name,
       'description': description,
@@ -53,7 +48,6 @@ class ProductModel extends Product {
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
     };
-  }
 
   static double _parsePrice(dynamic value) {
     if (value is double) return value;

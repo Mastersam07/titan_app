@@ -94,8 +94,7 @@ class _ProductCreateFormState extends State<_ProductCreateForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<ProductCreateCubit, ProductCreateState>(
+  Widget build(BuildContext context) => BlocConsumer<ProductCreateCubit, ProductCreateState>(
       listener: (context, state) {
         if (state is ProductCreateSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -142,15 +141,13 @@ class _ProductCreateFormState extends State<_ProductCreateForm> {
         );
       },
     );
-  }
 
   Widget _buildForm({
     required bool isLoading,
     required String? errorMessage,
     required VoidCallback onSave,
     required bool isEditing,
-  }) {
-    return Form(
+  }) => Form(
       key: _formKey,
       child: ListView(
         padding: const EdgeInsets.all(16),
@@ -254,12 +251,10 @@ class _ProductCreateFormState extends State<_ProductCreateForm> {
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.category_outlined),
             ),
-            items: _categories.map((category) {
-              return DropdownMenuItem(
+            items: _categories.map((category) => DropdownMenuItem(
                 value: category,
                 child: Text(category),
-              );
-            }).toList(),
+              )).toList(),
             onChanged: (value) {
               _categoryController.text = value ?? '';
             },
@@ -308,7 +303,6 @@ class _ProductCreateFormState extends State<_ProductCreateForm> {
         ],
       ),
     );
-  }
 }
 
 class _ProductEditForm extends StatefulWidget {
@@ -380,8 +374,7 @@ class _ProductEditFormState extends State<_ProductEditForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<ProductEditCubit, ProductEditState>(
+  Widget build(BuildContext context) => BlocConsumer<ProductEditCubit, ProductEditState>(
       listener: (context, state) {
         if (state is ProductEditSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -427,14 +420,12 @@ class _ProductEditFormState extends State<_ProductEditForm> {
         );
       },
     );
-  }
 
   Widget _buildForm({
     required bool isLoading,
     required String? errorMessage,
     required VoidCallback onSave,
-  }) {
-    return Form(
+  }) => Form(
       key: _formKey,
       child: ListView(
         padding: const EdgeInsets.all(16),
@@ -538,12 +529,10 @@ class _ProductEditFormState extends State<_ProductEditForm> {
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.category_outlined),
             ),
-            items: _categories.map((category) {
-              return DropdownMenuItem(
+            items: _categories.map((category) => DropdownMenuItem(
                 value: category,
                 child: Text(category),
-              );
-            }).toList(),
+              )).toList(),
             onChanged: (value) {
               _categoryController.text = value ?? '';
             },
@@ -592,5 +581,4 @@ class _ProductEditFormState extends State<_ProductEditForm> {
         ],
       ),
     );
-  }
 }

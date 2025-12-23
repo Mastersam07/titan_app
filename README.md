@@ -2,7 +2,7 @@
 
 A Flutter merchant dashboard for managing products via the Titan Products API.
 
-## 🛒 Features
+## Features
 
 - **View Products**: Grid view with pull-to-refresh and infinite scroll
 - **Create Products**: Add new products with name, price, description, category
@@ -11,46 +11,71 @@ A Flutter merchant dashboard for managing products via the Titan Products API.
 - **Search**: Real-time search by product name/description
 - **Stats Dashboard**: Quick overview of total products and stock status
 
-## 🏗️ Architecture
+## Architecture
 
-This app follows a clean architecture pattern with Cubit for state management:
+This app follows a **feature-first approach with hexagonal (clean) architecture** and Cubit for state management:
 
 ```
 lib/
-├── core/                    # Core utilities
-│   ├── api_constants.dart   # API configuration
-│   └── failures.dart        # Failure types
-├── models/                  # Data models
-│   ├── product.dart
-│   └── api_response.dart
-├── data/
-│   ├── providers/           # API calls (Dio)
-│   │   └── api_provider.dart
-│   └── repositories/        # Data access layer
-│       └── product_repository.dart
-├── cubits/                  # State management
-│   └── products/
-│       ├── products_cubit.dart
-│       └── products_state.dart   # Sealed classes
-├── ui/
-│   ├── screens/
-│   │   ├── products_list_screen.dart   # Main dashboard
-│   │   ├── product_detail_screen.dart  # View/Edit/Delete
-│   │   └── product_form_screen.dart    # Create/Edit form
-│   └── widgets/
-│       ├── product_card.dart
-│       ├── shimmer_loading.dart
-│       └── error_view.dart
-├── injection.dart           # Dependency injection
-└── main.dart                # Entry point
+├── core/                                    # Shared core utilities
+│   ├── error/
+│   │   └── failures.dart                    # Failure types
+│   ├── network/
+│   │   └── api_constants.dart               # API configuration
+│   └── usecases/
+│       └── usecase.dart                     # Base use case interface
+├── features/
+│   └── products/                            # Products feature module
+│       ├── data/                            # Data layer
+│       │   ├── datasources/
+│       │   │   └── product_remote_datasource.dart
+│       │   ├── models/
+│       │   │   └── product_model.dart
+│       │   └── repositories/
+│       │       └── product_repository_impl.dart
+│       ├── domain/                          # Domain layer
+│       │   ├── entities/
+│       │   │   └── product.dart
+│       │   ├── repositories/
+│       │   │   └── product_repository.dart  # Abstract repository
+│       │   └── usecases/
+│       │       ├── get_products.dart
+│       │       ├── get_product.dart
+│       │       ├── create_product.dart
+│       │       ├── update_product.dart
+│       │       └── delete_product.dart
+│       └── presentation/                    # Presentation layer
+│           ├── cubits/
+│           │   ├── product_list/
+│           │   ├── product_detail/
+│           │   ├── product_create/
+│           │   └── product_edit/
+│           ├── screens/
+│           │   ├── products_list_screen.dart
+│           │   ├── product_detail_screen.dart
+│           │   └── product_form_screen.dart
+│           └── widgets/
+│               ├── product_card.dart
+│               ├── shimmer_loading.dart
+│               └── error_view.dart
+├── injection.dart                           # Dependency injection setup
+└── main.dart                                # Entry point
 ```
 
-## 🚀 Getting Started
+### Layer Responsibilities
+
+| Layer | Responsibility |
+|-------|---------------|
+| **Domain** | Business logic, entities, use cases, repository interfaces |
+| **Data** | API calls, data models, repository implementations |
+| **Presentation** | UI components, state management (Cubits), screens |
+
+## Getting Started
 
 ### Prerequisites
 
 - Flutter 3.0+ installed
-- The PHP API running (see titan-api [README](https://github.com/Mastersam07/titan_api))
+- The Titan API running (see [titan-api](https://github.com/Mastersam07/titan_api))
 
 ### Installation
 
@@ -62,26 +87,23 @@ flutter pub get
 flutter run
 ```
 
-### Configure API URL
+### API Configuration
 
-Edit `lib/core/api_constants.dart`:
+The app connects to a hosted API by default. To configure a different API URL, edit `lib/core/network/api_constants.dart`:
 
 ```dart
 class ApiConstants {
-  static const String baseUrl = 'http://localhost:8000';
-  
-  // For Android emulator:
-  // static const String baseUrl = 'http://10.0.2.2:8000';
-  
-  // For physical device (use your machine's IP):
-  // static const String baseUrl = 'http://192.168.1.100:8000';
-  
-  // For ngrok tunnel:
-  // static const String baseUrl = 'https://abc123.ngrok.io';
+  static const String baseUrl = 'https://titan-api-3f3i.onrender.com/api';
+
+  // For local development:
+  // static const String baseUrl = 'http://localhost:8000/api';
+
+  // For Android emulator (local):
+  // static const String baseUrl = 'http://10.0.2.2:8000/api';
 }
 ```
 
-## 📱 Screens
+## Screens
 
 ### Products List (Dashboard)
 - Grid view of all products
@@ -105,7 +127,7 @@ class ApiConstants {
 - Category dropdown
 - Image URL preview
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -115,7 +137,7 @@ flutter test
 flutter test --coverage
 ```
 
-## 📦 Dependencies
+## Dependencies
 
 | Package | Purpose |
 |---------|---------|
@@ -127,43 +149,42 @@ flutter test --coverage
 | cached_network_image | Image caching |
 | shimmer | Loading effects |
 
-## 🔧 State Management
+### Dev Dependencies
 
-The app uses **Cubit** with **sealed classes** for exhaustive pattern matching:
+| Package | Purpose |
+|---------|---------|
+| bloc_test | Testing Cubits |
+| mocktail | Mocking for tests |
+
+## State Management
+
+The app uses **Cubit** with **sealed classes** for exhaustive pattern matching. Each feature operation has its own dedicated Cubit:
+
+- `ProductListCubit` - Handles product list fetching, pagination, and search
+- `ProductDetailCubit` - Handles single product fetch and deletion
+- `ProductCreateCubit` - Handles product creation
+- `ProductEditCubit` - Handles product updates
+
+### Example State Pattern
 
 ```dart
 // Sealed state classes (Dart 3)
-sealed class ProductsState extends Equatable {}
-final class ProductsInitial extends ProductsState {}
-final class ProductsLoading extends ProductsState {}
-final class ProductsLoaded extends ProductsState {}
-final class ProductsError extends ProductsState {}
+sealed class ProductListState extends Equatable {}
+final class ProductListInitial extends ProductListState {}
+final class ProductListLoading extends ProductListState {}
+final class ProductListLoaded extends ProductListState {}
+final class ProductListError extends ProductListState {}
 
 // Exhaustive pattern matching in UI
 return switch (state) {
-  ProductsInitial() => const ProductsGridShimmer(),
-  ProductsLoading(isLoadingMore: false) => const ProductsGridShimmer(),
-  ProductsLoading(isLoadingMore: true, existingProducts: final products) => 
-    _buildProductsGrid(products, isLoadingMore: true),
-  ProductsLoaded(products: []) => EmptyView(...),
-  ProductsLoaded(products: final products) => _buildProductsGrid(products),
-  ProductsError(previousProducts: []) => ErrorView(...),
-  ProductsError(previousProducts: final products) => _buildWithError(products),
+  ProductListInitial() => const ProductsGridShimmer(),
+  ProductListLoading() => const ProductsGridShimmer(),
+  ProductListLoaded(products: final products) => _buildProductsGrid(products),
+  ProductListError() => ErrorView(...),
 };
 ```
 
-### Cubit Actions
-```dart
-fetchProducts()     // Initial load
-loadMore()          // Pagination
-search(query)       // Search products
-refresh()           // Pull to refresh
-deleteProduct(id)   // Remove product
-addProduct(p)       // Add after create
-updateProduct(p)    // Update after edit
-```
-
-## 📡 API Integration
+## API Integration
 
 The app connects to the Titan Products API with full CRUD support:
 
@@ -176,6 +197,7 @@ The app connects to the Titan Products API with full CRUD support:
 | DELETE | `/products/{id}` | Delete product |
 
 ### Create Product Request
+
 ```json
 {
   "name": "New Product",
@@ -187,34 +209,13 @@ The app connects to the Titan Products API with full CRUD support:
 }
 ```
 
-## 🎨 UI Components
-
-### ProductCard
-Displays product in grid with:
-- Cached network image
-- Category badge
-- Price
-- Stock status
-
-### ProductDetailScreen
-Full product view with:
-- Hero image
-- Description
-- Stock information
-- Add to cart button
-
-### Loading States
-- Shimmer effect for grid items
-- Pull-to-refresh indicator
-- Pagination loading indicator
-
-## 📋 Troubleshooting
+## Troubleshooting
 
 ### "Connection refused" error
 
-1. Make sure the PHP API is running
-2. Check the URL in `api_constants.dart`
-3. For Android emulator, use `10.0.2.2` instead of `localhost`
+1. Make sure the API is running and accessible
+2. Check the URL in `lib/core/network/api_constants.dart`
+3. For Android emulator with local API, use `10.0.2.2` instead of `localhost`
 
 ### Images not loading
 

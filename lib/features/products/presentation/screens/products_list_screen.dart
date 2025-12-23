@@ -15,12 +15,10 @@ class ProductsListScreen extends StatelessWidget {
   const ProductsListScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+  Widget build(BuildContext context) => BlocProvider(
       create: (_) => GetIt.I<ProductListCubit>()..fetchProducts(),
       child: const _ProductsListView(),
     );
-  }
 }
 
 class _ProductsListView extends StatefulWidget {
@@ -104,8 +102,7 @@ class _ProductsListViewState extends State<_ProductsListView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,8 +137,7 @@ class _ProductsListViewState extends State<_ProductsListView> {
           ),
           Expanded(
             child: BlocBuilder<ProductListCubit, ProductListState>(
-              builder: (context, state) {
-                return switch (state) {
+              builder: (context, state) => switch (state) {
                   ProductListInitial() => const ProductsGridShimmer(),
                   ProductListLoading(isLoadingMore: false) => const ProductsGridShimmer(),
                   ProductListLoading(isLoadingMore: true, existingProducts: final products) =>
@@ -161,8 +157,7 @@ class _ProductsListViewState extends State<_ProductsListView> {
                     ),
                   ProductListError(message: final message, previousProducts: final products) =>
                     _buildProductsGridWithError(products, message),
-                };
-              },
+                },
             ),
           ),
         ],
@@ -173,10 +168,8 @@ class _ProductsListViewState extends State<_ProductsListView> {
         label: const Text('Add Product'),
       ),
     );
-  }
 
-  Widget _buildSearchBar() {
-    return Container(
+  Widget _buildSearchBar() => Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -221,7 +214,6 @@ class _ProductsListViewState extends State<_ProductsListView> {
         },
       ),
     );
-  }
 
   Widget _buildStatsBar(ProductListLoaded state) {
     final totalProducts = state.meta.total;
@@ -245,8 +237,7 @@ class _ProductsListViewState extends State<_ProductsListView> {
     );
   }
 
-  Widget _buildStatChip(IconData icon, String label, {Color? color}) {
-    return Container(
+  Widget _buildStatChip(IconData icon, String label, {Color? color}) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: (color ?? Colors.grey).withValues(alpha: 0.1),
@@ -268,14 +259,12 @@ class _ProductsListViewState extends State<_ProductsListView> {
         ],
       ),
     );
-  }
 
   Widget _buildProductsGrid(
     List<Product> products, {
     bool isLoadingMore = false,
     bool canLoadMore = false,
-  }) {
-    return RefreshIndicator(
+  }) => RefreshIndicator(
       onRefresh: () => context.read<ProductListCubit>().refresh(),
       child: GridView.builder(
         controller: _scrollController,
@@ -301,10 +290,8 @@ class _ProductsListViewState extends State<_ProductsListView> {
         },
       ),
     );
-  }
 
-  Widget _buildProductsGridWithError(List<Product> products, String error) {
-    return Column(
+  Widget _buildProductsGridWithError(List<Product> products, String error) => Column(
       children: [
         Container(
           width: double.infinity,
@@ -337,5 +324,4 @@ class _ProductsListViewState extends State<_ProductsListView> {
         ),
       ],
     );
-  }
 }

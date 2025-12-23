@@ -9,6 +9,7 @@ linter:
     - prefer_single_quotes
     - sort_constructors_first
     - sort_unnamed_constructors_first
+    - prefer_expression_function_bodies
 
 analyzer:
   exclude:

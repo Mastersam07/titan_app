@@ -21,7 +21,5 @@ class UpdateProduct implements UseCase<Product, UpdateProductParams> {
   final ProductRepository repository;
 
   @override
-  Future<Either<Failure, Product>> call(UpdateProductParams params) {
-    return repository.updateProduct(params.id, params.data);
-  }
+  Future<Either<Failure, Product>> call(UpdateProductParams params) => repository.updateProduct(params.id, params.data);
 }

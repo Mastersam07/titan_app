@@ -5,8 +5,7 @@ class ProductCardShimmer extends StatelessWidget {
   const ProductCardShimmer({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(BuildContext context) => Card(
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
@@ -83,7 +82,6 @@ class ProductCardShimmer extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class ProductsGridShimmer extends StatelessWidget {
@@ -94,8 +92,7 @@ class ProductsGridShimmer extends StatelessWidget {
   final int itemCount;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(BuildContext context) => GridView.builder(
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -106,5 +103,4 @@ class ProductsGridShimmer extends StatelessWidget {
       itemCount: itemCount,
       itemBuilder: (context, index) => const ProductCardShimmer(),
     );
-  }
 }

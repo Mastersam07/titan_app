@@ -11,7 +11,5 @@ class GetProduct implements UseCase<Product, int> {
   final ProductRepository repository;
 
   @override
-  Future<Either<Failure, Product>> call(int id) {
-    return repository.getProduct(id);
-  }
+  Future<Either<Failure, Product>> call(int id) => repository.getProduct(id);
 }

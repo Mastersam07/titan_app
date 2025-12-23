@@ -16,8 +16,7 @@ class TitanApp extends StatelessWidget {
   const TitanApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Titan Merchant',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -52,5 +51,4 @@ class TitanApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       home: const ProductsListScreen(),
     );
-  }
 }

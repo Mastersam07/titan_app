@@ -17,12 +17,10 @@ class ProductDetailScreen extends StatelessWidget {
   final Product product;
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+  Widget build(BuildContext context) => BlocProvider(
       create: (_) => GetIt.I<ProductDetailCubit>()..setProduct(product),
       child: const _ProductDetailView(),
     );
-  }
 }
 
 class _ProductDetailView extends StatelessWidget {
@@ -79,8 +77,7 @@ class _ProductDetailView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<ProductDetailCubit, ProductDetailState>(
+  Widget build(BuildContext context) => BlocConsumer<ProductDetailCubit, ProductDetailState>(
       listener: (context, state) {
         if (state is ProductDetailDeleted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -275,7 +272,6 @@ class _ProductDetailView extends StatelessWidget {
         );
       },
     );
-  }
 
   Widget _buildImage(Product product) {
     if (product.imageUrl == null || product.imageUrl!.isEmpty) {
@@ -346,8 +342,7 @@ class _ProductDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(BuildContext context, String label, String value, {bool isUrl = false}) {
-    return Padding(
+  Widget _buildDetailRow(BuildContext context, String label, String value, {bool isUrl = false}) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,9 +370,6 @@ class _ProductDetailView extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-  }
+  String _formatDate(DateTime date) => '${date.day}/${date.month}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 }

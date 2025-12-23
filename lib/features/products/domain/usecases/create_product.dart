@@ -11,7 +11,5 @@ class CreateProduct implements UseCase<Product, Product> {
   final ProductRepository repository;
 
   @override
-  Future<Either<Failure, Product>> call(Product product) {
-    return repository.createProduct(product);
-  }
+  Future<Either<Failure, Product>> call(Product product) => repository.createProduct(product);
 }

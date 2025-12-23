@@ -113,9 +113,7 @@ class ProductListCubit extends Cubit<ProductListState> {
   void updateProduct(Product product) {
     if (state is ProductListLoaded) {
       final loaded = state as ProductListLoaded;
-      final updatedProducts = loaded.products.map((p) {
-        return p.id == product.id ? product : p;
-      }).toList();
+      final updatedProducts = loaded.products.map((p) => p.id == product.id ? product : p).toList();
       emit(loaded.copyWith(products: updatedProducts));
     }
   }

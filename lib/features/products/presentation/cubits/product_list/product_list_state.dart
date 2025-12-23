@@ -53,14 +53,12 @@ final class ProductListLoaded extends ProductListState {
     PaginationMeta? meta,
     String? searchQuery,
     String? categoryFilter,
-  }) {
-    return ProductListLoaded(
+  }) => ProductListLoaded(
       products: products ?? this.products,
       meta: meta ?? this.meta,
       searchQuery: searchQuery ?? this.searchQuery,
       categoryFilter: categoryFilter ?? this.categoryFilter,
     );
-  }
 
   @override
   List<Object?> get props => [products, meta, searchQuery, categoryFilter];
