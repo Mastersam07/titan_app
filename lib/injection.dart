@@ -1,23 +1,36 @@
 import 'package:get_it/get_it.dart';
 
-import 'data/providers/api_provider.dart';
-import 'data/repositories/product_repository.dart';
-import 'cubits/products/products_cubit.dart';
+import 'features/products/data/datasources/product_remote_datasource.dart';
+import 'features/products/data/repositories/product_repository_impl.dart';
+import 'features/products/domain/repositories/product_repository.dart';
+import 'features/products/domain/usecases/create_product.dart';
+import 'features/products/domain/usecases/delete_product.dart';
+import 'features/products/domain/usecases/get_product.dart';
+import 'features/products/domain/usecases/get_products.dart';
+import 'features/products/domain/usecases/update_product.dart';
+import 'features/products/presentation/cubits/product_create/product_create_cubit.dart';
+import 'features/products/presentation/cubits/product_detail/product_detail_cubit.dart';
+import 'features/products/presentation/cubits/product_edit/product_edit_cubit.dart';
+import 'features/products/presentation/cubits/product_list/product_list_cubit.dart';
 
-final getIt = GetIt.instance;
+final di = GetIt.instance;
 
-/// Initialize all dependencies
 void setupDependencies() {
-  // Providers
-  getIt.registerLazySingleton<ApiProvider>(() => ApiProvider());
+  di.registerLazySingleton<ProductRemoteDataSource>(() => ProductRemoteDataSourceImpl());
 
-  // Repositories
-  getIt.registerLazySingleton<ProductRepository>(
-    () => ProductRepository(apiProvider: getIt<ApiProvider>()),
-  );
+  di.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl(remoteDataSource: di()));
 
-  // Cubits
-  getIt.registerFactory<ProductsCubit>(
-    () => ProductsCubit(repository: getIt<ProductRepository>()),
-  );
+  di.registerLazySingleton(() => GetProducts(di()));
+  di.registerLazySingleton(() => GetProduct(di()));
+  di.registerLazySingleton(() => CreateProduct(di()));
+  di.registerLazySingleton(() => UpdateProduct(di()));
+  di.registerLazySingleton(() => DeleteProduct(di()));
+
+  di.registerFactory<ProductListCubit>(() => ProductListCubit(getProducts: di()));
+
+  di.registerFactory<ProductDetailCubit>(() => ProductDetailCubit(getProduct: di(), deleteProduct: di()));
+
+  di.registerFactory<ProductCreateCubit>(() => ProductCreateCubit(createProduct: di()));
+
+  di.registerFactory<ProductEditCubit>(() => ProductEditCubit(getProduct: di(), updateProduct: di()));
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'features/products/presentation/screens/products_list_screen.dart';
 import 'injection.dart';
-import 'ui/screens/products_list_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
