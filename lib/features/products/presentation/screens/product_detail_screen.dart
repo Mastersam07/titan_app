@@ -67,23 +67,13 @@ class _ProductDetailView extends StatelessWidget {
       final cubit = context.read<ProductDetailCubit>();
       final success = await cubit.delete();
 
-      if (context.mounted) {
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Product deleted successfully'),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context, 'deleted');
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Failed to delete product'),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-          );
-        }
+      if (context.mounted && !success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Failed to delete product'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
       }
     }
   }
@@ -93,6 +83,12 @@ class _ProductDetailView extends StatelessWidget {
     return BlocConsumer<ProductDetailCubit, ProductDetailState>(
       listener: (context, state) {
         if (state is ProductDetailDeleted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Product deleted successfully'),
+              backgroundColor: Colors.green,
+            ),
+          );
           Navigator.pop(context, 'deleted');
         }
       },
