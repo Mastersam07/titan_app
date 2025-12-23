@@ -33,17 +33,18 @@ class Product extends Equatable {
     String? category,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => Product(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      price: price ?? this.price,
-      imageUrl: imageUrl ?? this.imageUrl,
-      stockQuantity: stockQuantity ?? this.stockQuantity,
-      category: category ?? this.category,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
+  }) =>
+      Product(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        price: price ?? this.price,
+        imageUrl: imageUrl ?? this.imageUrl,
+        stockQuantity: stockQuantity ?? this.stockQuantity,
+        category: category ?? this.category,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
   String get formattedPrice => '\$${price.toStringAsFixed(2)}';
 

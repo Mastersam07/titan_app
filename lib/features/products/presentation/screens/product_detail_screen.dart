@@ -18,9 +18,9 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-      create: (_) => GetIt.I<ProductDetailCubit>()..setProduct(product),
-      child: const _ProductDetailView(),
-    );
+        create: (_) => GetIt.I<ProductDetailCubit>()..setProduct(product),
+        child: const _ProductDetailView(),
+      );
 }
 
 class _ProductDetailView extends StatelessWidget {
@@ -78,200 +78,200 @@ class _ProductDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocConsumer<ProductDetailCubit, ProductDetailState>(
-      listener: (context, state) {
-        if (state is ProductDetailDeleted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Product deleted successfully'),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context, 'deleted');
-        }
-      },
-      builder: (context, state) {
-        final product = switch (state) {
-          ProductDetailLoaded(product: final p) => p,
-          ProductDetailDeleting(product: final p) => p,
-          ProductDetailError(product: final p) => p,
-          _ => null,
-        };
-
-        if (product == null) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 300,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: _buildImage(product),
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    tooltip: 'Edit Product',
-                    onPressed: () => _editProduct(context, product),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    tooltip: 'Delete Product',
-                    onPressed: () => _deleteProduct(context, product),
-                  ),
-                ],
+        listener: (context, state) {
+          if (state is ProductDetailDeleted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Product deleted successfully'),
+                backgroundColor: Colors.green,
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          if (product.category != null) ...[
+            );
+            Navigator.pop(context, 'deleted');
+          }
+        },
+        builder: (context, state) {
+          final product = switch (state) {
+            ProductDetailLoaded(product: final p) => p,
+            ProductDetailDeleting(product: final p) => p,
+            ProductDetailError(product: final p) => p,
+            _ => null,
+          };
+
+          if (product == null) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          return Scaffold(
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 300,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: _buildImage(product),
+                  ),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      tooltip: 'Edit Product',
+                      onPressed: () => _editProduct(context, product),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      tooltip: 'Delete Product',
+                      onPressed: () => _deleteProduct(context, product),
+                    ),
+                  ],
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            if (product.category != null) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primaryContainer,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  product.category!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
+                                horizontal: 8,
+                                vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                product.category!,
+                                'ID: ${product.id}',
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                  fontSize: 11,
+                                  color: Colors.grey[600],
+                                  fontFamily: 'monospace',
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
                           ],
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              'ID: ${product.id}',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.grey[600],
-                                fontFamily: 'monospace',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        product.name,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        product.formattedPrice,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildStockStatus(context, product),
-                      const SizedBox(height: 24),
-                      if (product.description != null && product.description!.isNotEmpty) ...[
+                        ),
+                        const SizedBox(height: 12),
                         Text(
-                          'Description',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          product.name,
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          product.description!,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Colors.grey[700],
-                                height: 1.5,
+                          product.formattedPrice,
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold,
                               ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildStockStatus(context, product),
+                        const SizedBox(height: 24),
+                        if (product.description != null && product.description!.isNotEmpty) ...[
+                          Text(
+                            'Description',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            product.description!,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  color: Colors.grey[700],
+                                  height: 1.5,
+                                ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Product Details',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                const SizedBox(height: 12),
+                                _buildDetailRow(context, 'Product ID', '#${product.id}'),
+                                _buildDetailRow(context, 'Stock Quantity', '${product.stockQuantity} units'),
+                                _buildDetailRow(context, 'Category', product.category ?? 'Uncategorized'),
+                                if (product.imageUrl != null)
+                                  _buildDetailRow(context, 'Image URL', product.imageUrl!, isUrl: true),
+                                if (product.createdAt != null)
+                                  _buildDetailRow(context, 'Created', _formatDate(product.createdAt!)),
+                                if (product.updatedAt != null)
+                                  _buildDetailRow(context, 'Last Updated', _formatDate(product.updatedAt!)),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 24),
-                      ],
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Product Details',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: () => _editProduct(context, product),
+                                icon: const Icon(Icons.edit),
+                                label: const Text('Edit Product'),
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                ),
                               ),
-                              const SizedBox(height: 12),
-                              _buildDetailRow(context, 'Product ID', '#${product.id}'),
-                              _buildDetailRow(context, 'Stock Quantity', '${product.stockQuantity} units'),
-                              _buildDetailRow(context, 'Category', product.category ?? 'Uncategorized'),
-                              if (product.imageUrl != null)
-                                _buildDetailRow(context, 'Image URL', product.imageUrl!, isUrl: true),
-                              if (product.createdAt != null)
-                                _buildDetailRow(context, 'Created', _formatDate(product.createdAt!)),
-                              if (product.updatedAt != null)
-                                _buildDetailRow(context, 'Last Updated', _formatDate(product.updatedAt!)),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: () => _deleteProduct(context, product),
+                                icon: const Icon(Icons.delete),
+                                label: const Text('Delete'),
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  foregroundColor: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () => _editProduct(context, product),
-                              icon: const Icon(Icons.edit),
-                              label: const Text('Edit Product'),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () => _deleteProduct(context, product),
-                              icon: const Icon(Icons.delete),
-                              label: const Text('Delete'),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                foregroundColor: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                    ],
+                        const SizedBox(height: 32),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+              ],
+            ),
+          );
+        },
+      );
 
   Widget _buildImage(Product product) {
     if (product.imageUrl == null || product.imageUrl!.isEmpty) {
@@ -343,33 +343,34 @@ class _ProductDetailView extends StatelessWidget {
   }
 
   Widget _buildDetailRow(BuildContext context, String label, String value, {bool isUrl = false}) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: TextStyle(
-                color: Colors.grey[600],
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 120,
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: isUrl ? Theme.of(context).colorScheme.primary : null,
+            Expanded(
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: isUrl ? Theme.of(context).colorScheme.primary : null,
+                ),
+                maxLines: isUrl ? 1 : null,
+                overflow: isUrl ? TextOverflow.ellipsis : null,
               ),
-              maxLines: isUrl ? 1 : null,
-              overflow: isUrl ? TextOverflow.ellipsis : null,
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
 
-  String _formatDate(DateTime date) => '${date.day}/${date.month}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+  String _formatDate(DateTime date) =>
+      '${date.day}/${date.month}/${date.year} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 }
