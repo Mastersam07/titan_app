@@ -50,7 +50,7 @@ lib/
 ### Prerequisites
 
 - Flutter 3.0+ installed
-- The PHP API running (see titan-api README)
+- The PHP API running (see titan-api [README](https://github.com/Mastersam07/titan_api))
 
 ### Installation
 
