@@ -1,5 +1,9 @@
 # Titan Merchant App
 
+<a href="https://codecov.io/github/Mastersam07/titan_app" > 
+ <img src="https://codecov.io/github/Mastersam07/titan_app/graph/badge.svg?token=mnHN6iIT1d"/> 
+ </a>
+
 A Flutter merchant dashboard for managing products via the Titan Products API.
 
 ## Features
