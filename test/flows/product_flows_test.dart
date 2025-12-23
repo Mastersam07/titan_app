@@ -245,6 +245,7 @@ void main() {
       when(() => mockGetProducts(any())).thenAnswer(
         (_) async => Right(createTestProductsResult(products: [product])),
       );
+      when(() => mockGetProduct(1)).thenAnswer((_) async => Right(product));
 
       await tester.pumpWidget(createTestApp(child: const ProductsListScreen()));
       await tester.pumpAndSettle();
@@ -254,6 +255,7 @@ void main() {
 
       // Act - Tap product
       await listRobot.tapProduct(0);
+      await tester.pumpAndSettle();
 
       // Assert - detail screen shown
       await detailRobot.isVisible();
@@ -267,6 +269,7 @@ void main() {
       when(() => mockGetProducts(any())).thenAnswer(
         (_) async => Right(createTestProductsResult(products: [product])),
       );
+      when(() => mockGetProduct(1)).thenAnswer((_) async => Right(product));
       when(() => mockDeleteProduct(1)).thenAnswer((_) async => const Right(true));
 
       await tester.pumpWidget(createTestApp(child: const ProductsListScreen()));
@@ -277,6 +280,7 @@ void main() {
 
       // Navigate to detail
       await listRobot.tapProduct(0);
+      await tester.pumpAndSettle();
       await detailRobot.isVisible();
 
       // Act - Delete
@@ -302,6 +306,7 @@ void main() {
       when(() => mockGetProducts(any())).thenAnswer(
         (_) async => Right(createTestProductsResult(products: [product])),
       );
+      when(() => mockGetProduct(1)).thenAnswer((_) async => Right(product));
 
       final updatedProduct = createTestProduct(
         id: 1,
@@ -321,6 +326,7 @@ void main() {
 
       // Navigate to detail then edit
       await listRobot.tapProduct(0);
+      await tester.pumpAndSettle();
       await detailRobot.tapEditButton();
 
       // Assert - edit form shown with data

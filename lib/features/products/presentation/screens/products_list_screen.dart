@@ -75,7 +75,7 @@ class _ProductsListViewState extends State<_ProductsListView> {
     final result = await Navigator.push<dynamic>(
       context,
       MaterialPageRoute(
-        builder: (_) => ProductDetailScreen(product: product),
+        builder: (_) => ProductDetailScreen(productId: product.id),
       ),
     );
 
